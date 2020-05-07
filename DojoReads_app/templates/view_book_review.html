@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/ViewBook.css' %}">
+</head>
+
+<body>
+    <a href="/success/{{this_user}}">Home</a>
+    <a href="/logoutUser">Logout</a>
+    <h4>{{ the_book.title }}</h4>
+    <p>Author: {{ this_book_author.name }}</p> <!--HERE-->
+    <br>
+    <div id="theReviews">
+        <h4>Reviews: </h4>
+        {% for raters in the_other_review %}
+            {% if the_book.id == raters.books.id %}
+                <p>Rating: {{ raters.ratings }}</p>
+                <p><a href="/users/{{raters.user_reviewer.id}}">{{ raters.user_reviewer.name }}</a> says {{ raters.written_review }}</p>
+                <p>{{ raters.updated_at }}</p>
+                {% if this_user == raters.user_reviewer.id %}
+                    <a href="/books/{{this_book_author.id}}/delete">Delete this Review</a>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div id="addReviewBox">
+        <h4>Add a Review: </h4>
+        <form action="" method="post">
+            {% csrf_token %}
+            <input type ="text" name="type_review_for_me">
+            <h5>Rating: 
+                <select name="my_ratings"> 
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            stars</h5>
+            <input type="submit" value="Submit Review">
+        </form>
+    </div>
+</body>
+
+</html>

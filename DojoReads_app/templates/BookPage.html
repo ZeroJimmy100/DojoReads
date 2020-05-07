@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/BookPage.css' %}">
+</head>
+
+<body>
+    <div id="wrapper">
+        <h3 id="welcomeword">Welcome, {{ create_user.name }}!</h3>
+        <div id="logoradd">
+            <a href = "/books/add" id = "AddaBook">Add Book and Review</a>
+            <a href="/logoutUser" id = "Logoutlink">Logout</a>
+        </div>
+        <br>
+        <div id="topThreeBox">
+            <h4>Recent Book Reviews:</h4>
+            <br>
+            {% for top_books in three_books %}
+                <a href="/books/{{top_books.id}}">{{ top_books.title }}</a><br>
+                {% for the_reviews in all_reviews %}
+                    {% if the_reviews.books.id == top_books.id %}
+                        <p>Rating: {{ the_reviews.ratings }}</p>
+                        <p><a href="/users/{{ the_reviews.user_reviewer.id }}">{{ the_reviews.user_reviewer.alias }}</a> says {{ the_reviews.written_review }} </p>
+                        <p>Posted on: {{ the_reviews.created_at }}</p>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        <div id="otherReviewBox">
+            <h4 id="OtherBook">Other Books with Reviews: </h4>
+                <div id="BookSelectBox">
+                    {% for all_other_books in these_books %} 
+                    <a href="/books/{{all_other_books.id}}"> {{ all_other_books.title }} </a></br>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+</body>
+
+</html>
